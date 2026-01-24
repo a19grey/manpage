@@ -1,0 +1,637 @@
+<!--
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                    ALEX KRAUSE PERSONAL WEBSITE                           ║
+║                    Single-Page HTML Application                           ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+OVERVIEW:
+This is a single-page personal branding website with an 80s retro-futurism
+aesthetic. Features card-based navigation with image-wrapped rounded elements.
+
+STRUCTURE:
+- Header: Contact info and bio
+- Main: Grid of category cards (Essays, Research, Education, Work Experience)
+- Footer: Voltaire quote
+- Card system: Click to expand/flip to subcards
+
+HOW TO ADD NEW CONTENT:
+
+1. ADD A NEW CATEGORY CARD:
+   - Add a new card div in the #card-grid section
+   - Give it class "card" and unique data-category attribute
+   - Add background image URL in style attribute
+   - Update JavaScript cardData object with category and subcards
+
+2. ADD SUBCARDS TO EXISTING CATEGORY:
+   - Edit the cardData object in <script> section
+   - Add new item to the subcards array for that category
+   - Include: title, description, image properties
+
+3. CHANGE STYLING:
+   - Main colors: CSS variables in :root section
+   - Card styling: .card class and related rules
+   - Typography: body and heading selectors
+
+TECH STACK:
+- Pure HTML5
+- Vanilla CSS3 (no preprocessors)
+- Vanilla JavaScript (functional paradigm, no OOP)
+- No external dependencies
+
+BROWSER SUPPORT:
+Modern browsers with CSS Grid and ES6 support
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alex Krause - Personal Site</title>
+    <style>
+        /* ═══════════════════════════════════════════════════════════════ */
+        /* ROOT VARIABLES - 80s Retro Futurism Color Palette              */
+        /* ═══════════════════════════════════════════════════════════════ */
+        :root {
+            --bg-light: #e0e0e0;
+            --bg-card: #b8b8b8;
+            --accent-orange: #ff6b35;
+            --text-dark: #2a2a2a;
+            --text-gray: #5a5a5a;
+            --text-light: #f5f5f5;
+            --card-shadow: rgba(0, 0, 0, 0.2);
+            --subtle-grid: rgba(0, 0, 0, 0.03);
+        }
+
+        /* ═══════════════════════════════════════════════════════════════ */
+        /* BASE STYLES                                                     */
+        /* ═══════════════════════════════════════════════════════════════ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            background: var(--bg-light);
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 20px, var(--subtle-grid) 20px, var(--subtle-grid) 21px),
+                repeating-linear-gradient(90deg, transparent, transparent 20px, var(--subtle-grid) 20px, var(--subtle-grid) 21px);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════ */
+        /* HEADER SECTION                                                  */
+        /* ═══════════════════════════════════════════════════════════════ */
+        header {
+            background: var(--bg-light);
+            color: var(--text-dark);
+            padding: 2rem;
+            text-align: center;
+            border-bottom: none;
+            box-shadow: none;
+        }
+
+        .contact-info {
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            letter-spacing: 0.5px;
+            color: var(--text-gray);
+            text-transform: uppercase;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            letter-spacing: 8px;
+            text-shadow: none;
+            margin-bottom: 0.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        .bio {
+            max-width: 800px;
+            margin: 1.5rem auto 0;
+            font-size: 2rem;
+            line-height: 1.2;
+            color: var(--accent-orange);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: none;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════ */
+        /* MAIN CONTENT & CARD GRID                                        */
+        /* ═══════════════════════════════════════════════════════════════ */
+        main {
+            flex: 1;
+            padding: 3rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        #card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════ */
+        /* CARD STYLING - Rounded edges with wrapped images               */
+        /* ═══════════════════════════════════════════════════════════════ */
+        .card {
+            position: relative;
+            height: 250px;
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px var(--card-shadow);
+            background-size: cover;
+            background-position: center;
+            border: none;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.2) 100%);
+            transition: opacity 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px var(--card-shadow);
+        }
+
+        .card:hover::before {
+            opacity: 0.7;
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 1;
+            padding: 2rem;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card h2 {
+            color: white;
+            font-size: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .card p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.85rem;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+
+        /* ═══════════════════════════════════════════════════════════════ */
+        /* SUBCARD CONTAINER (appears when category card clicked)          */
+        /* ═══════════════════════════════════════════════════════════════ */
+        #subcard-container {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            border: none;
+            box-shadow: 0 4px 12px var(--card-shadow);
+            position: relative;
+        }
+
+        /* Essays: Bold left accent bar */
+        #subcard-container.category-essays {
+            border-left: 8px solid #ff6b35;
+            padding-left: 2.5rem;
+        }
+
+        /* Work: Colored top banner strip */
+        #subcard-container.category-work::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(to right, #ff6b35, #ff8c5a);
+            border-radius: 20px 20px 0 0;
+        }
+
+        /* Projects: Geometric corner accents */
+        #subcard-container.category-projects::before,
+        #subcard-container.category-projects::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: var(--accent-orange);
+            opacity: 0.15;
+        }
+
+        #subcard-container.category-projects::before {
+            top: 0;
+            left: 0;
+            border-radius: 20px 0 0 0;
+            clip-path: polygon(0 0, 100% 0, 0 100%);
+        }
+
+        #subcard-container.category-projects::after {
+            bottom: 0;
+            right: 0;
+            border-radius: 0 0 20px 0;
+            clip-path: polygon(100% 0, 100% 100%, 0 100%);
+        }
+
+        /* Education: Gradient background tint */
+        #subcard-container.category-education {
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.08) 0%, rgba(255, 255, 255, 0.5) 100%);
+        }
+
+        #subcard-container.active {
+            display: grid;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .subcard {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px var(--card-shadow);
+            border: none;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .subcard-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            border: none;
+        }
+
+        .subcard:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px var(--card-shadow);
+        }
+
+        .subcard h3 {
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+            text-shadow: none;
+            font-weight: 700;
+        }
+
+        .subcard p {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .subcard a {
+            color: var(--accent-orange);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 600;
+        }
+
+        .subcard a:hover {
+            color: var(--text-dark);
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-bottom: 1rem;
+            padding: 0.7rem 1.5rem;
+            background: var(--accent-orange);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Arial', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .back-button:hover {
+            background: var(--text-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px var(--card-shadow);
+        }
+
+        /* ═══════════════════════════════════════════════════════════════ */
+        /* FOOTER                                                          */
+        /* ═══════════════════════════════════════════════════════════════ */
+        footer {
+            background: var(--bg-light);
+            color: var(--text-gray);
+            padding: 2rem;
+            text-align: center;
+            border-top: none;
+            font-style: italic;
+            font-size: 0.85rem;
+            text-shadow: none;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════ */
+        /* RESPONSIVE DESIGN                                               */
+        /* ═══════════════════════════════════════════════════════════════ */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            #card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- HEADER: Contact Info & Bio                                      -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <header>
+        <div class="contact-info">
+            Alex Krause, Torrance, CA | 405.464.2483 | A19grey@gmail.com<br>
+            <a href="https://x.com/a19grey" target="_blank" style="color: var(--accent-orange); text-decoration: none;">@a19grey</a> |
+            <a href="https://www.linkedin.com/in/forscience/" target="_blank" style="color: var(--accent-orange); text-decoration: none;">linkedin.com/in/forscience</a>
+        </div>
+        <h1>ALEX KRAUSE</h1>
+        <div class="bio">
+            BUILD MOAR STUFF
+        </div>
+    </header>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- MAIN CONTENT: Category Cards & Subcards                         -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <main>
+        <div id="card-grid">
+            <!-- ESSAYS CARD -->
+            <div class="card" data-category="essays" style="background-image: url('https://images.unsplash.com/photo-1471107340929-a87cd0f5b5f3?w=800');">
+                <div class="card-content">
+                    <h2>ESSAYS</h2>
+                    <p>Thoughts & Ideas</p>
+                </div>
+            </div>
+
+            <!-- WORK CARD -->
+            <div class="card" data-category="work" style="background-image: url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=800');">
+                <div class="card-content">
+                    <h2>WORK</h2>
+                    <p>Professional Experience</p>
+                </div>
+            </div>
+
+            <!-- SIDE PROJECTS CARD -->
+            <div class="card" data-category="projects" style="background-image: url('https://images.unsplash.com/photo-1518770660439-4636190af475?w=800');">
+                <div class="card-content">
+                    <h2>SIDE PROJECTS</h2>
+                    <p>Code & Experiments</p>
+                </div>
+            </div>
+
+            <!-- EDUCATION CARD -->
+            <div class="card" data-category="education" style="background-image: url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800');">
+                <div class="card-content">
+                    <h2>EDUCATION</h2>
+                    <p>Academic Background</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SUBCARD CONTAINER (hidden by default, shows when card clicked) -->
+        <div id="subcard-container"></div>
+    </main>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- FOOTER: Quote                                                   -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <footer>
+        "No problem can withstand the assault of sustained thinking" - Voltaire
+    </footer>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- JAVASCRIPT: Functional approach for card interactions           -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <script>
+        // ═══════════════════════════════════════════════════════════════
+        // DATA STRUCTURE - Add/edit content here
+        // ═══════════════════════════════════════════════════════════════
+        const cardData = {
+            essays: {
+                title: 'Essays',
+                subcards: [
+                    {
+                        title: 'On Building',
+                        description: 'Thoughts on creating things that matter.',
+                        image: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=600'
+                    },
+                    {
+                        title: 'Technology & Society',
+                        description: 'How we shape tools and tools shape us.',
+                        image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600'
+                    },
+                    {
+                        title: 'The Art of Experimentation',
+                        description: 'Learning through doing and failing forward.',
+                        image: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=600'
+                    }
+                ]
+            },
+            work: {
+                title: 'Work',
+                subcards: [
+                    {
+                        title: 'Apple',
+                        description: 'Software Engineer working on innovative products and user experiences. Building the future of personal technology.',
+                        image: 'https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=600',
+                        link: 'https://www.apple.com'
+                    },
+                    {
+                        title: 'Exponent',
+                        description: 'Founding Engineer and Head of Product. Building interview prep platform serving 100k+ users. Led product strategy and full-stack development.',
+                        image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=600',
+                        link: 'https://www.tryexponent.com'
+                    },
+                    {
+                        title: 'Previous Roles',
+                        description: 'Various engineering and research positions spanning biomedical engineering, data science, and software development.',
+                        image: 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600'
+                    }
+                ]
+            },
+            projects: {
+                title: 'Side Projects',
+                subcards: [
+                    {
+                        title: 'Hardware Hacks',
+                        description: 'IoT devices, electronics projects, and physical computing experiments.',
+                        image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=600'
+                    },
+                    {
+                        title: 'AI Experiments',
+                        description: 'Machine learning models, LLM applications, and automation tools.',
+                        image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600'
+                    },
+                    {
+                        title: 'Web Apps',
+                        description: 'Full-stack applications and tools built for fun and learning.',
+                        image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600'
+                    },
+                    {
+                        title: 'Open Source',
+                        description: 'Contributions to open source projects and community tools.',
+                        image: 'https://images.unsplash.com/photo-1556075798-4825dfaaf498?w=600'
+                    }
+                ]
+            },
+            education: {
+                title: 'Education',
+                subcards: [
+                    {
+                        title: 'California Institute of Technology',
+                        description: 'BS Physics - Studied quantum mechanics, computational physics, and advanced mathematics. Research in experimental physics.',
+                        image: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=600',
+                        link: 'https://www.caltech.edu'
+                    },
+                    {
+                        title: 'Boston University',
+                        description: 'PhD Biomedical Engineering - Research in medical devices, biosensors, and computational biology. Published multiple papers.',
+                        image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600',
+                        link: 'https://www.bu.edu'
+                    }
+                ]
+            }
+        };
+
+        // ═══════════════════════════════════════════════════════════════
+        // FUNCTION: Render subcards for a given category
+        // ═══════════════════════════════════════════════════════════════
+        function renderSubcards(category) {
+            const data = cardData[category];
+            if (!data) return;
+
+            const container = document.getElementById('subcard-container');
+            container.innerHTML = '';
+
+            data.subcards.forEach(subcard => {
+                const subcardElement = document.createElement('div');
+                subcardElement.className = 'subcard';
+
+                let imageHTML = '';
+                if (subcard.image) {
+                    imageHTML = `<img src="${subcard.image}" alt="${subcard.title}" class="subcard-image">`;
+                }
+
+                let linkHTML = '';
+                if (subcard.link) {
+                    linkHTML = `<br><a href="${subcard.link}" target="_blank">→ Visit</a>`;
+                }
+
+                subcardElement.innerHTML = `
+                    ${imageHTML}
+                    <h3>${subcard.title}</h3>
+                    <p>${subcard.description}${linkHTML}</p>
+                `;
+                container.appendChild(subcardElement);
+            });
+
+            container.classList.add('active', 'category-' + category);
+            document.getElementById('card-grid').style.opacity = '0.65';
+        }
+
+        // ═══════════════════════════════════════════════════════════════
+        // FUNCTION: Close subcards and return to main view
+        // ═══════════════════════════════════════════════════════════════
+        function closeSubcards() {
+            const container = document.getElementById('subcard-container');
+            container.className = '';
+            document.getElementById('card-grid').style.opacity = '1';
+        }
+
+        // ═══════════════════════════════════════════════════════════════
+        // EVENT LISTENERS: Click handlers for category cards
+        // ═══════════════════════════════════════════════════════════════
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.card');
+
+            cards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const category = card.getAttribute('data-category');
+                    renderSubcards(category);
+                });
+            });
+        });
+
+        // ═══════════════════════════════════════════════════════════════
+        // KEYBOARD NAVIGATION: ESC key to close subcards
+        // ═══════════════════════════════════════════════════════════════
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeSubcards();
+            }
+        });
+
+        // ═══════════════════════════════════════════════════════════════
+        // CLICK OUTSIDE: Close subcards when clicking on greyed-out area
+        // ═══════════════════════════════════════════════════════════════
+        document.addEventListener('click', (e) => {
+            const subcardContainer = document.getElementById('subcard-container');
+            const cardGrid = document.getElementById('card-grid');
+
+            // If subcard container is active and click is on card grid
+            if (subcardContainer.classList.contains('active') &&
+                cardGrid.contains(e.target)) {
+                closeSubcards();
+            }
+        });
+    </script>
+</body>
+</html>
