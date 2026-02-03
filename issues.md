@@ -1,35 +1,45 @@
 # Known Issues - Personal Website
 
-## Critical Bug: Card Click Not Working
+## Card Click Issue - DEBUGGING IN PROGRESS
 
-**Problem:**
-- Clicking on any of the 4 main category cards (Essays, Work, Side Projects, Education) produces no visual response
-- Network tab shows subcard images are being requested/loaded
-- Subcards never appear on screen
+**Original Problem:**
+- Clicking on category cards didn't show subcards
+- Network tab showed images loading (proving JS was running)
+- Subcards never appeared visually
 
-**Expected Behavior:**
-- Click card → subcards expand below
-- Background cards grey out (opacity 0.65)
-- Each category shows unique visual tie (left border, top stripe, corner accents, or gradient)
-- Click outside or ESC to close
+**Analysis:**
+The JavaScript event listeners WERE present (contrary to initial theory). The issue appeared to be a timing/rendering problem where:
+1. DOM elements were being created (evidenced by image requests)
+2. Classes were being added
+3. But the browser wasn't rendering the display: grid change properly
 
-**Technical Details:**
-- JavaScript event listeners appear configured correctly in DOMContentLoaded
-- `renderSubcards()` function should add 'active' and 'category-X' classes to #subcard-container
-- CSS has `display: none` by default, should switch to `display: grid` when `.active` class added
-- Images loading suggests JS is executing but DOM manipulation failing
+**Fixes Applied (2026-01-24):**
+1. ✅ Split `classList.add()` into separate calls for better compatibility
+2. ✅ Added forced reflow (`void container.offsetHeight;`) before showing content
+3. ✅ Added error checking and console logging for debugging
+4. ✅ Improved `closeSubcards()` to explicitly remove all category classes
+5. ✅ Added defensive null checks
 
-**Attempted Fixes:**
-- Fixed class manipulation from `className =` to `classList.add()`
-- Updated closeSubcards() to properly clean up classes
-- Still not working
+**Testing Instructions:**
+1. Open index.html in browser
+2. Open browser DevTools Console (F12)
+3. Click on any category card
+4. Check console for messages:
+   - Should see: "Subcards rendered for category: [name]"
+   - Should NOT see any errors
+5. Check Elements tab to verify:
+   - #subcard-container has classes: "active category-[name]"
+   - Element style shows: display: grid
+6. Visually verify subcards appear below cards
 
-**Next Steps to Debug:**
-1. Check browser console for JS errors
-2. Verify event listeners are actually attaching to cards
-3. Add console.log() statements in renderSubcards() to track execution
-4. Confirm CSS `.active` class rules are correct
-5. Test if subcard-container is receiving classes via DevTools
+**If Still Broken:**
+Run this in browser console after clicking a card:
+```javascript
+const container = document.getElementById('subcard-container');
+console.log('Classes:', container.className);
+console.log('Display:', getComputedStyle(container).display);
+console.log('Children:', container.children.length);
+```
 
-## Status: UNRESOLVED
-Priority: High - Core functionality broken
+## Status: FIXES APPLIED - NEEDS TESTING
+Priority: High
