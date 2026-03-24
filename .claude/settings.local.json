@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3:*)",
+      "Bash(sudo cat:*)",
+      "Bash(sudo certbot:*)",
+      "Bash(sudo systemctl reload nginx:*)",
+      "Bash(curl -s https://greylabs86.com/)",
+      "Bash(TZ='America/Los_Angeles' date:*)",
+      "Bash(/opt/apps/gitpush.sh:*)",
+      "Bash(bash:*)"
+    ]
+  }
+}

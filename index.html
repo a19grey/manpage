@@ -1,19 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
+<!--
+ ============================================================================
+ ALEX KRAUSE PERSONAL SITE
+ ----------------------------------------------------------------------------
+ Design: 80s Retro-Futurism
+ - Light grey background with soft orange accents
+ - Raised "pebble" cards with warped/pillow-effect images
+ - Single-page HTML, vanilla JS, no frameworks
+
+ USAGE:
+ 1. Click a category card to expand that section
+ 2. Click again or press ESC to close
+ 3. Each subcard shows details for that item
+
+ TO ADD NEW ITEMS:
+ - Find the cardData object in the <script> section
+ - Add a new entry to the appropriate category's subcards array
+ - Each subcard needs: title, description, image, and optionally link/date
+
+ IMAGE PLACEHOLDER PATTERN:
+ - Find images at: https://source.unsplash.com/ or use /assets/ local files
+ - For project images, add to /assets/ folder and reference with relative path
+ ============================================================================
+-->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alex Krause - Personal Site</title>
+    <title>Alex Krause - BUILD MOAR STUFF</title>
     <style>
+        /*
+         * ================================================================
+         * CSS VARIABLES - 80s Retro-Futurism Palette
+         * ================================================================
+         */
         :root {
             --bg-light: #e0e0e0;
             --bg-card: #b8b8b8;
             --accent-orange: #ff6b35;
-            --text-dark: #2a2a2a;
-            --text-gray: #5a5a5a;
+            --accent-orange-light: #ff8c5a;
+            --accent-cyan: #00d4ff;
+            --accent-magenta: #ff00ff;
+            --text-dark: #1a1a2e;
+            --text-gray: #4a4a5a;
             --text-light: #f5f5f5;
-            --card-shadow: rgba(0, 0, 0, 0.2);
+            --card-shadow: rgba(0, 0, 0, 0.3);
             --subtle-grid: rgba(0, 0, 0, 0.03);
+            --glow-orange: 0 0 20px rgba(255, 107, 53, 0.5);
+            --glow-cyan: 0 0 20px rgba(0, 212, 255, 0.3);
         }
 
         * {
@@ -22,58 +56,134 @@
             box-sizing: border-box;
         }
 
+        /*
+         * ================================================================
+         * BODY & BACKGROUND - Subtle grid + 80s gradient feel
+         * ================================================================
+         */
         body {
             font-family: 'Arial', 'Helvetica', sans-serif;
             background: var(--bg-light);
             background-image:
-                repeating-linear-gradient(0deg, transparent, transparent 20px, var(--subtle-grid) 20px, var(--subtle-grid) 21px),
-                repeating-linear-gradient(90deg, transparent, transparent 20px, var(--subtle-grid) 20px, var(--subtle-grid) 21px);
+                repeating-linear-gradient(0deg, transparent, transparent 40px, var(--subtle-grid) 40px, var(--subtle-grid) 41px),
+                repeating-linear-gradient(90deg, transparent, transparent 40px, var(--subtle-grid) 40px, var(--subtle-grid) 41px);
             color: var(--text-dark);
             line-height: 1.6;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            overflow-x: hidden;
         }
 
+        /*
+         * ================================================================
+         * HEADER - Bold 80s energy with glowing bio
+         * ================================================================
+         */
         header {
-            background: var(--bg-light);
-            color: var(--text-dark);
-            padding: 2rem;
+            background: linear-gradient(135deg, #1a1a2e 0%, #2d2d4a 100%);
+            color: var(--text-light);
+            padding: 3rem 2rem;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 100px,
+                    rgba(255, 107, 53, 0.03) 100px,
+                    rgba(255, 107, 53, 0.03) 101px
+                ),
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 100px,
+                    rgba(0, 212, 255, 0.02) 100px,
+                    rgba(0, 212, 255, 0.02) 101px
+                );
+            pointer-events: none;
         }
 
         .contact-info {
-            font-size: 0.85rem;
-            margin-bottom: 1rem;
-            letter-spacing: 0.5px;
-            color: var(--text-gray);
+            font-size: 0.8rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.7);
             text-transform: uppercase;
+            position: relative;
+            z-index: 1;
         }
 
         .contact-info a {
             color: var(--accent-orange);
             text-decoration: none;
+            transition: all 0.3s ease;
+            text-shadow: var(--glow-orange);
+        }
+
+        .contact-info a:hover {
+            color: var(--accent-cyan);
+            text-shadow: var(--glow-cyan);
         }
 
         h1 {
-            font-size: 2.5rem;
-            letter-spacing: 8px;
+            font-size: 3.5rem;
+            letter-spacing: 15px;
             margin-bottom: 0.5rem;
             font-weight: 900;
             text-transform: uppercase;
+            position: relative;
+            z-index: 1;
+            text-shadow:
+                0 0 10px rgba(255, 107, 53, 0.5),
+                0 0 30px rgba(255, 107, 53, 0.3),
+                0 0 50px rgba(255, 107, 53, 0.2);
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            from {
+                text-shadow:
+                    0 0 10px rgba(255, 107, 53, 0.5),
+                    0 0 30px rgba(255, 107, 53, 0.3);
+            }
+            to {
+                text-shadow:
+                    0 0 20px rgba(255, 107, 53, 0.8),
+                    0 0 40px rgba(255, 107, 53, 0.5),
+                    0 0 60px rgba(255, 107, 53, 0.3);
+            }
         }
 
         .bio {
             max-width: 800px;
             margin: 1.5rem auto 0;
-            font-size: 2rem;
+            font-size: 1.8rem;
             line-height: 1.2;
-            color: var(--accent-orange);
-            font-weight: 900;
+            color: var(--accent-cyan);
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 5px;
+            position: relative;
+            z-index: 1;
+            text-shadow: var(--glow-cyan);
         }
 
+        /*
+         * ================================================================
+         * MAIN CONTENT - Card Grid
+         * ================================================================
+         */
         main {
             flex: 1;
             padding: 3rem 2rem;
@@ -84,246 +194,339 @@
 
         #card-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
             margin-bottom: 2rem;
             transition: opacity 0.3s ease;
         }
 
+        /*
+         * ================================================================
+         * CARDS - Pebble/Pillow Effect with Warped Images
+         * ================================================================
+         */
         .card {
             position: relative;
-            height: 250px;
-            border-radius: 20px;
+            height: 280px;
+            border-radius: 30px;
             overflow: hidden;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px var(--card-shadow);
-            background-size: cover;
-            background-position: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow:
+                0 8px 32px var(--card-shadow),
+                inset 0 -5px 20px rgba(0, 0, 0, 0.1),
+                inset 0 5px 20px rgba(255, 255, 255, 0.1);
+            background: #2a2a3e;
+            transform-style: preserve-3d;
+            perspective: 1000px;
         }
 
-        .card::before {
+        /* The "pebble" image that wraps around the card */
+        .card-image-wrapper {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border-radius: 35px;
+            overflow: hidden;
+            transform: translateZ(0);
+            transition: transform 0.4s ease;
+        }
+
+        .card-image-wrapper::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.2) 100%);
+            background: linear-gradient(
+                135deg,
+                rgba(26, 26, 46, 0.3) 0%,
+                rgba(26, 26, 46, 0.1) 50%,
+                rgba(26, 26, 46, 0.4) 100%
+            );
+            z-index: 1;
             transition: opacity 0.3s ease;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px var(--card-shadow);
+        .card-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* Subtle warp effect using filter */
+            filter: saturate(1.2) contrast(1.1);
+            transition: transform 0.4s ease;
         }
 
-        .card:hover::before {
-            opacity: 0.7;
+        .card:hover {
+            transform: translateY(-10px) rotateX(2deg) rotateY(-2deg);
+            box-shadow:
+                0 20px 50px var(--card-shadow),
+                var(--glow-orange);
+        }
+
+        .card:hover .card-image-wrapper {
+            transform: scale(1.05);
+        }
+
+        .card:hover .card-image-wrapper::before {
+            opacity: 0.6;
         }
 
         .card-content {
-            position: relative;
-            z-index: 1;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
             padding: 2rem;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
+            z-index: 2;
+            background: linear-gradient(
+                to top,
+                rgba(26, 26, 46, 0.95) 0%,
+                rgba(26, 26, 46, 0.7) 60%,
+                transparent 100%
+            );
         }
 
         .card h2 {
-            color: white;
-            font-size: 1.5rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
-            letter-spacing: 1px;
-            margin-bottom: 0.5rem;
+            color: var(--text-light);
+            font-size: 1.6rem;
+            letter-spacing: 3px;
+            margin-bottom: 0.3rem;
             text-transform: uppercase;
-            font-weight: 700;
+            font-weight: 800;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         }
 
         .card p {
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(255, 255, 255, 0.7);
             font-size: 0.85rem;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
+        /*
+         * ================================================================
+         * SUBCARD SECTION - Expanded view
+         * ================================================================
+         */
         #subcard-section {
             display: none;
             margin-top: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s ease;
         }
 
         #subcard-section.show {
             display: block;
-            animation: slideIn 0.5s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .category-header {
             text-align: center;
             margin-bottom: 2rem;
-            padding: 1.5rem;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 4px 12px var(--card-shadow);
+            padding: 2rem;
+            background: linear-gradient(135deg, #1a1a2e 0%, #2d2d4a 100%);
+            border-radius: 25px;
+            box-shadow:
+                0 8px 32px var(--card-shadow),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
             border-left: 8px solid var(--accent-orange);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-orange), var(--accent-cyan), var(--accent-orange));
         }
 
         .category-header h2 {
-            font-size: 2rem;
-            color: var(--text-dark);
+            font-size: 2.5rem;
+            color: var(--text-light);
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 8px;
             font-weight: 900;
             margin: 0;
+            text-shadow: var(--glow-orange);
         }
 
         .category-header .subtitle {
-            font-size: 0.9rem;
-            color: var(--text-gray);
+            font-size: 0.85rem;
+            color: var(--accent-cyan);
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 3px;
             margin-top: 0.5rem;
+            text-shadow: var(--glow-cyan);
         }
 
         #subcard-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 1.5rem;
             padding: 2rem;
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            box-shadow: 0 8px 32px var(--card-shadow);
+            backdrop-filter: blur(10px);
+        }
+
+        /*
+         * ================================================================
+         * SUBCARDS - Individual items within a category
+         * ================================================================
+         */
+        .subcard {
+            background: linear-gradient(145deg, #ffffff 0%, #f0f0f0 100%);
             border-radius: 20px;
-            box-shadow: 0 4px 12px var(--card-shadow);
+            padding: 1.5rem;
+            box-shadow:
+                0 4px 16px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+            overflow: hidden;
             position: relative;
         }
 
-        #subcard-container.category-essays {
-            border-left: 8px solid #ff6b35;
-            padding-left: 2.5rem;
-        }
-
-        #subcard-container.category-work::before {
+        .subcard::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 6px;
-            background: linear-gradient(to right, #ff6b35, #ff8c5a);
-            border-radius: 20px 20px 0 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-orange), var(--accent-orange-light));
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        #subcard-container.category-projects::before,
-        #subcard-container.category-projects::after {
-            content: '';
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            background: var(--accent-orange);
-            opacity: 0.15;
+        .subcard:hover {
+            transform: translateY(-5px);
+            box-shadow:
+                0 12px 32px rgba(0, 0, 0, 0.15),
+                var(--glow-orange);
         }
 
-        #subcard-container.category-projects::before {
-            top: 0;
-            left: 0;
-            border-radius: 20px 0 0 0;
-            clip-path: polygon(0 0, 100% 0, 0 100%);
-        }
-
-        #subcard-container.category-projects::after {
-            bottom: 0;
-            right: 0;
-            border-radius: 0 0 20px 0;
-            clip-path: polygon(100% 0, 100% 100%, 0 100%);
-        }
-
-        #subcard-container.category-education {
-            background: linear-gradient(135deg, rgba(255, 107, 53, 0.08) 0%, rgba(255, 255, 255, 0.5) 100%);
-        }
-
-        .subcard {
-            background: white;
-            border-radius: 15px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 8px var(--card-shadow);
-            transition: all 0.3s ease;
-            overflow: hidden;
+        .subcard:hover::before {
+            opacity: 1;
         }
 
         .subcard-image {
             width: 100%;
-            height: 150px;
+            height: 180px;
             object-fit: cover;
-            border-radius: 10px;
+            border-radius: 15px;
             margin-bottom: 1rem;
-        }
-
-        .subcard:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 16px var(--card-shadow);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
         .subcard h3 {
             color: var(--text-dark);
             margin-bottom: 0.5rem;
-            font-size: 1.2rem;
-            font-weight: 700;
+            font-size: 1.3rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .subcard .date {
+            font-size: 0.75rem;
+            color: var(--accent-orange);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
         }
 
         .subcard p {
             color: var(--text-gray);
             font-size: 0.9rem;
-            line-height: 1.6;
+            line-height: 1.7;
         }
 
         .subcard a {
+            display: inline-block;
+            margin-top: 0.8rem;
             color: var(--accent-orange);
             text-decoration: none;
-            transition: color 0.3s ease;
-            font-weight: 600;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--accent-orange);
+            border-radius: 25px;
         }
 
         .subcard a:hover {
-            color: var(--text-dark);
+            background: var(--accent-orange);
+            color: white;
+            text-shadow: none;
         }
 
+        /*
+         * ================================================================
+         * FOOTER
+         * ================================================================
+         */
         footer {
-            background: var(--bg-light);
-            color: var(--text-gray);
+            background: linear-gradient(135deg, #1a1a2e 0%, #2d2d4a 100%);
+            color: rgba(255, 255, 255, 0.6);
             padding: 2rem;
             text-align: center;
             font-style: italic;
             font-size: 0.85rem;
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-orange), transparent);
         }
 
         .last-update {
             position: fixed;
-            bottom: 10px;
-            right: 15px;
+            bottom: 15px;
+            right: 20px;
             font-family: 'Courier New', monospace;
             font-size: 0.7rem;
-            color: var(--text-gray);
-            opacity: 0.6;
-            background: rgba(255, 255, 255, 0.7);
-            padding: 4px 8px;
-            border-radius: 4px;
+            color: var(--accent-orange);
+            opacity: 0.7;
+            background: rgba(26, 26, 46, 0.9);
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--accent-orange);
         }
 
+        /*
+         * ================================================================
+         * RESPONSIVE
+         * ================================================================
+         */
         @media (max-width: 768px) {
             h1 {
-                font-size: 1.8rem;
+                font-size: 2rem;
+                letter-spacing: 8px;
+            }
+
+            .bio {
+                font-size: 1.2rem;
+                letter-spacing: 3px;
             }
 
             #card-grid {
@@ -331,7 +534,17 @@
             }
 
             .card {
-                height: 200px;
+                height: 220px;
+            }
+
+            .category-header h2 {
+                font-size: 1.5rem;
+                letter-spacing: 4px;
+            }
+
+            #subcard-container {
+                grid-template-columns: 1fr;
+                padding: 1rem;
             }
         }
     </style>
@@ -339,40 +552,55 @@
 <body>
     <header>
         <div class="contact-info">
-            Alex Krause, Torrance, CA | 405.464.2483 | A19grey@gmail.com<br>
-            <a href="https://x.com/a19grey" target="_blank">@a19grey</a> |
-            <a href="https://www.linkedin.com/in/forscience/" target="_blank">linkedin.com/in/forscience</a>
+            ALEX KRAUSE &nbsp;|&nbsp; TORRANCE, CA &nbsp;|&nbsp; 405.464.2483 &nbsp;|&nbsp; 
+            <a href="mailto:A19grey@gmail.com">A19grey@gmail.com</a> &nbsp;|&nbsp;
+            <a href="https://x.com/a19grey" target="_blank">@a19grey</a> &nbsp;|&nbsp;
+            <a href="https://linkedin.com/in/forscience" target="_blank">LinkedIn</a>
         </div>
         <h1>ALEX KRAUSE</h1>
-        <div class="bio">
-            BUILD MOAR STUFF
-        </div>
+        <div class="bio">BUILD MOAR STUFF</div>
     </header>
 
     <main>
         <div id="card-grid">
-            <div class="card" data-category="essays" style="background-image: url('https://images.unsplash.com/photo-1471107340929-a87cd0f5b5f3?w=800');">
+            <!-- ESSAYS -->
+            <div class="card" data-category="essays" style="background: #1a1a2e;">
+                <div class="card-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800" alt="Essays">
+                </div>
                 <div class="card-content">
                     <h2>ESSAYS</h2>
                     <p>Thoughts & Ideas</p>
                 </div>
             </div>
 
-            <div class="card" data-category="work" style="background-image: url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=800');">
+            <!-- WORK -->
+            <div class="card" data-category="work" style="background: #1a1a2e;">
+                <div class="card-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800" alt="Work">
+                </div>
                 <div class="card-content">
                     <h2>WORK</h2>
                     <p>Professional Experience</p>
                 </div>
             </div>
 
-            <div class="card" data-category="projects" style="background-image: url('https://images.unsplash.com/photo-1518770660439-4636190af475?w=800');">
+            <!-- SIDE PROJECTS -->
+            <div class="card" data-category="projects" style="background: #1a1a2e;">
+                <div class="card-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=800" alt="Projects">
+                </div>
                 <div class="card-content">
                     <h2>SIDE PROJECTS</h2>
                     <p>Code & Experiments</p>
                 </div>
             </div>
 
-            <div class="card" data-category="education" style="background-image: url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800');">
+            <!-- EDUCATION -->
+            <div class="card" data-category="education" style="background: #1a1a2e;">
+                <div class="card-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800" alt="Education">
+                </div>
                 <div class="card-content">
                     <h2>EDUCATION</h2>
                     <p>Academic Background</p>
@@ -394,156 +622,224 @@
     </footer>
 
     <script>
+        /*
+         * ================================================================
+         * CARD DATA - All content lives here
+         * ================================================================
+         * To add new items, copy an existing subcard block and modify.
+         * Fields:
+         *   - title: Item name
+         *   - date: Optional date string
+         *   - description: Main text
+         *   - image: URL or local path (/assets/...)
+         *   - link: Optional external URL
+         *   - linkText: Text for the link button
+         * ================================================================
+         */
         const cardData = {
             essays: {
                 title: 'Essays',
                 subcards: [
                     {
+                        title: 'Please, Please, Please, Never Say No',
+                        date: 'May 2025',
+                        description: 'How to handle requests without saying "no" — get others to say no first by laying out trade-offs. Lessons from Apple and Boring Company on project management.',
+                        image: 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600',
+                        link: 'https://medium.com/@alexkrausephd/please-please-please-never-say-no-090c71143f39',
+                        linkText: 'Read on Medium'
+                    },
+                    {
+                        title: 'What Apple and Elon\'s Boring Company Taught Me About Project Management',
+                        date: 'April 2024',
+                        description: 'Two core principles: "Descope your way to success" and "Create a stakeholder feedback loop." How Apple hits iPhone ship dates with 95%+ accuracy.',
+                        image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=600',
+                        link: 'https://medium.com/@alexkrausephd/what-apple-and-elons-boring-company-taught-me-about-project-management-9e2a38a47016',
+                        linkText: 'Read on Medium'
+                    },
+                    {
                         title: 'On Building',
-                        description: 'Thoughts on creating things that matter.',
-                        image: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=600'
-                    },
-                    {
-                        title: 'Technology & Society',
-                        description: 'How we shape tools and tools shape us.',
-                        image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600'
-                    },
-                    {
-                        title: 'The Art of Experimentation',
-                        description: 'Learning through doing and failing forward.',
-                        image: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=600'
+                        date: 'Ongoing',
+                        description: 'Thoughts on creating things that matter — from hardware to software to life.',
+                        image: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=600',
+                        link: null,
+                        linkText: null
                     }
                 ]
             },
+
             work: {
                 title: 'Work',
                 subcards: [
                     {
+                        title: 'Trace',
+                        date: '2023 - Present',
+                        description: 'Director of Hardware building AI-powered sports cameras that automatically capture and edit soccer highlights. Leading hardware innovation for hardware-as-a-service model. 10,000+ units deployed worldwide.',
+                        image: 'https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=600',
+                        link: 'https://www.tracevision.com',
+                        linkText: 'Visit Trace'
+                    },
+                    {
+                        title: 'The Boring Company',
+                        date: '2021 - 2023',
+                        description: 'Led integration for a >300-ton tunneling machine. Applied Apple-style project management to infrastructure. Learned that you can buy more equipment and hire more people, but you can\'t buy more time.',
+                        image: '/opt/apps/manpage/assets/2_BoringCompany_Fire.png',
+                        link: 'https://www.boringcompany.com',
+                        linkText: 'Learn More'
+                    },
+                    {
                         title: 'Apple',
-                        description: 'Software Engineer working on innovative products and user experiences. Building the future of personal technology.',
-                        image: 'https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=600',
-                        link: 'https://www.apple.com'
+                        date: '2017 - 2021',
+                        description: 'Technical lead for Face ID depth sensor shipped on iPhone X, XS, 12, and 13 series. Oversaw production and yield optimization. Deep expertise in VCSELs, structured light, and 3D sensing at mass production scale.',
+                        image: '/opt/apps/manpage/assets/1_FaceID_ISOshot.png',
+                        link: null,
+                        linkText: null
                     },
                     {
                         title: 'Exponent',
-                        description: 'Founding Engineer and Head of Product. Building interview prep platform serving 100k+ users. Led product strategy and full-stack development.',
+                        date: '2015 - 2017',
+                        description: 'Founding Engineer and Head of Product at interview prep platform serving 100k+ users. Led product strategy and full-stack development. Built initial team and product from zero to launch.',
                         image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=600',
-                        link: 'https://www.tryexponent.com'
-                    },
-                    {
-                        title: 'Previous Roles',
-                        description: 'Various engineering and research positions spanning biomedical engineering, data science, and software development.',
-                        image: 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600'
+                        link: 'https://www.tryexponent.com',
+                        linkText: 'Visit Exponent'
                     }
                 ]
             },
+
             projects: {
                 title: 'Side Projects',
                 subcards: [
                     {
-                        title: 'Hardware Hacks',
-                        description: 'IoT devices, electronics projects, and physical computing experiments.',
-                        image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=600'
+                        title: 'LED Motion Reactive Suit',
+                        date: '2017',
+                        description: 'A suit that lights up in response to the wearer\'s movements. Built with 2x Arduino boards reading accelerometers on hands and feet. Direction sets color, luminosity proportional to acceleration. Shot demo video with a professional ballet dancer.',
+                        image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600',
+                        link: 'https://youtu.be/jl5HzWneFZ0',
+                        linkText: 'Watch Demo'
+                    },
+                    {
+                        title: 'ZombieTeam',
+                        date: '2025',
+                        description: 'Endless runner-style game inspired by fake mobile ads (Age of Origins vibe). A hero chased by a zombie horde. Built as a "vibe-coding" project.',
+                        image: 'https://images.unsplash.com/photo-1509248961895-40216a244f29?w=600',
+                        link: 'https://zombie-team.vercel.app',
+                        linkText: 'Play Game'
+                    },
+                    {
+                        title: 'Zombie Survival',
+                        date: '2025',
+                        description: 'Cooperative multiplayer zombie survival game built with Three.js. Team up with friends to survive the horde.',
+                        image: 'https://images.unsplash.com/photo-1509248961895-40216a244f29?w=600',
+                        link: 'https://vibeplay.surf',
+                        linkText: 'Play Game'
+                    },
+                    {
+                        title: 'Depth Pro',
+                        date: '2024',
+                        description: '3D model generation from single image using AI. Creating depth maps and 3D reconstructions from standard photos.',
+                        image: 'https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=600',
+                        link: 'https://huggingface.co/A19grey',
+                        linkText: 'View on HuggingFace'
                     },
                     {
                         title: 'AI Experiments',
-                        description: 'Machine learning models, LLM applications, and automation tools.',
-                        image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600'
-                    },
-                    {
-                        title: 'Web Apps',
-                        description: 'Full-stack applications and tools built for fun and learning.',
-                        image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600'
-                    },
-                    {
-                        title: 'Open Source',
-                        description: 'Contributions to open source projects and community tools.',
-                        image: 'https://images.unsplash.com/photo-1556075798-4825dfaaf498?w=600'
+                        date: 'Ongoing',
+                        description: 'Various machine learning models and LLM applications. Exploring what's possible with modern AI tools.',
+                        image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600',
+                        link: 'https://huggingface.co/A19grey',
+                        linkText: 'View on HuggingFace'
                     }
                 ]
             },
+
             education: {
                 title: 'Education',
                 subcards: [
                     {
-                        title: 'California Institute of Technology',
-                        description: 'BS Physics - Studied quantum mechanics, computational physics, and advanced mathematics. Research in experimental physics.',
+                        title: 'PhD in Physics',
+                        date: '2009 - 2014',
+                        description: 'California Institute of Technology (Caltech). Research in chip-scale photonics for inertial sensors, optomechanics, quantum systems, and laser cooling. Published in Nature and Physical Review Letters. Worked with Oskar Painter\'s group.',
                         image: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=600',
-                        link: 'https://www.caltech.edu'
+                        link: 'https://www.caltech.edu',
+                        linkText: 'Visit Caltech'
                     },
                     {
-                        title: 'Boston University',
-                        description: 'PhD Biomedical Engineering - Research in medical devices, biosensors, and computational biology. Published multiple papers.',
+                        title: 'BS in Physics',
+                        date: '2004 - 2008',
+                        description: 'Boston University. Treasurer and Member of the Allocations Board (2006-2009). Managed disbursement of $450,000+ in university funds. Obtained unprecedented 24% budget increase through lobbying.',
                         image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600',
-                        link: 'https://www.bu.edu'
+                        link: 'https://www.bu.edu',
+                        linkText: 'Visit BU'
+                    },
+                    {
+                        title: 'Publications',
+                        date: '2011 - 2016',
+                        description: 'Nature (2016): Non-classical correlations between single photons and phonons. PRL (2015): Nonlinear Radiation Pressure Dynamics. PRL (2012): Quantum zero-point motion measurement. Nature (2011): Laser cooling into quantum ground state.',
+                        image: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=600',
+                        link: null,
+                        linkText: null
+                    },
+                    {
+                        title: 'Patents',
+                        date: '2013 - 2014',
+                        description: 'US 8849075: Systems and methods for tuning a cavity (2014). PCT/US2013/028763: Optomechanical accelerometer (2013). Both related to integrated opto-mechanical and electro-mechanical systems.',
+                        image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600',
+                        link: null,
+                        linkText: null
                     }
                 ]
             }
         };
 
+        // Track current open category
+        let currentCategory = null;
+
         function showSubcards(category) {
-            console.log('showSubcards called with category:', category);
             const data = cardData[category];
-            if (!data) {
-                console.log('No data found for category:', category);
-                return;
-            }
+            if (!data) return;
 
             const container = document.getElementById('subcard-container');
             const section = document.getElementById('subcard-section');
             const cardGrid = document.getElementById('card-grid');
             const categoryTitle = document.getElementById('category-title');
 
-            console.log('Elements found:', {container, section, cardGrid});
-
             // Set category title
             categoryTitle.textContent = data.title.toUpperCase();
 
-            // Clear container
+            // Clear and set container class
             container.innerHTML = '';
             container.className = '';
             container.classList.add('category-' + category);
 
             // Create subcards
-            console.log('Creating subcards, count:', data.subcards.length);
             data.subcards.forEach(subcard => {
                 const div = document.createElement('div');
                 div.className = 'subcard';
 
-                let html = '';
-                if (subcard.image) {
-                    html += `<img src="${subcard.image}" alt="${subcard.title}" class="subcard-image">`;
-                }
+                let html = `<img src="${subcard.image}" alt="${subcard.title}" class="subcard-image" onerror="this.src='https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=600'">`;
                 html += `<h3>${subcard.title}</h3>`;
+                if (subcard.date) {
+                    html += `<div class="date">${subcard.date}</div>`;
+                }
                 html += `<p>${subcard.description}`;
-                if (subcard.link) {
-                    html += `<br><a href="${subcard.link}" target="_blank">→ Visit</a>`;
+                if (subcard.link && subcard.linkText) {
+                    html += `<br><a href="${subcard.link}" target="_blank">${subcard.linkText}</a>`;
                 }
                 html += `</p>`;
 
                 div.innerHTML = html;
                 container.appendChild(div);
-                console.log('Added subcard:', subcard.title);
             });
-            console.log('Container children count:', container.children.length);
-            console.log('Container innerHTML length:', container.innerHTML.length);
 
-            // Show section
-            console.log('Adding show class to section');
+            // Show section with animation
             section.classList.add('show');
-            section.style.display = 'block';
-            section.style.visibility = 'visible';
-            section.style.opacity = '1';
-            section.style.zIndex = '1000';
-            cardGrid.style.opacity = '0.6';
-            console.log('Section classes:', section.className);
-            console.log('Section computed height:', window.getComputedStyle(section).height);
-            console.log('Section offsetHeight:', section.offsetHeight);
+            cardGrid.style.opacity = '0.5';
 
             // Scroll to subcards
             setTimeout(() => {
                 section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }, 100);
+
+            currentCategory = category;
         }
 
         function closeSubcards() {
@@ -552,17 +848,18 @@
 
             section.classList.remove('show');
             cardGrid.style.opacity = '1';
+            currentCategory = null;
         }
 
-        // Add click handlers to cards
-        console.log('Setting up click handlers...');
-        const cards = document.querySelectorAll('.card');
-        console.log('Found cards:', cards.length);
-        cards.forEach(card => {
+        // Add click handlers to main cards
+        document.querySelectorAll('.card').forEach(card => {
             card.addEventListener('click', () => {
                 const category = card.getAttribute('data-category');
-                console.log('Card clicked, category:', category);
-                showSubcards(category);
+                if (currentCategory === category) {
+                    closeSubcards();
+                } else {
+                    showSubcards(category);
+                }
             });
         });
 
@@ -573,15 +870,16 @@
             }
         });
 
-        // Click on card grid when subcards are open
+        // Click on card grid when subcards are open to close
         document.getElementById('card-grid').addEventListener('click', (e) => {
-            const section = document.getElementById('subcard-section');
-            if (section.classList.contains('show')) {
+            if (currentCategory && e.target.closest('.card')) {
+                // Let the card click handler deal with it
+            } else if (currentCategory) {
                 closeSubcards();
             }
         });
     </script>
 
-    <div class="last-update">last push: 2026-02-02 23:26:31 PST</div>
+    <div class="last-update">last push: 2026-03-24</div>
 </body>
 </html>
