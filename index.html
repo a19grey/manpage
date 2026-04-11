@@ -424,6 +424,25 @@
             gap: 0.5rem;
         }
 
+        .home-teaser-essay {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .teaser-essay-img {
+            width: 150px;
+            border-radius: 10px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+            object-fit: cover;
+            height: 110px;
+            transition: transform 0.2s ease;
+        }
+
+        .home-teaser:hover .teaser-essay-img {
+            transform: scale(1.03) rotate(-1deg);
+        }
+
         .teaser-paper-imgs {
             position: relative;
             width: 150px;
@@ -735,6 +754,12 @@
                             <img src="/assets/book_vol2.jpg" alt="Of Animals and Art Vol 2" class="teaser-book teaser-book-front">
                         </div>
                         <p class="home-teaser-label">Also wrote kids' books ↗</p>
+                    </div>
+
+                    <div onclick="showSubcards('essays')" class="home-teaser home-teaser-essay">
+                        <img src="/assets/essay_apple_boring.jpg" alt="Apple meets Boring Company" class="teaser-essay-img">
+                        <p class="home-teaser-label">Apple + Boring Co. ↗</p>
+                        <p class="home-teaser-sublabel">What they taught me about shipping</p>
                     </div>
 
                     <div onclick="showSubcards('education')" class="home-teaser home-teaser-paper">
