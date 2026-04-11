@@ -257,17 +257,42 @@
             display: flex;
             gap: 2.5rem;
             align-items: flex-start;
-            margin-bottom: 3rem;
+        }
+
+        /* Left column: photos stacked */
+        .home-photos-col {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            flex-shrink: 0;
+            width: 220px;
         }
 
         .home-photo-main {
-            width: 280px;
-            min-width: 280px;
-            border-radius: 20px;
+            width: 220px;
+            border-radius: 16px;
             box-shadow: 0 8px 32px rgba(0,0,0,0.25);
             object-fit: cover;
         }
 
+        .home-photo-end {
+            width: 180px;
+            border-radius: 14px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+            height: auto;
+            transform: rotate(-1.5deg);
+            margin-left: 20px;
+        }
+
+        .home-photo-caption {
+            font-size: 0.72rem;
+            color: var(--text-gray);
+            letter-spacing: 0.5px;
+            font-style: italic;
+            margin-top: 0.1rem;
+        }
+
+        /* Right column: text */
         .home-text h2 {
             font-size: 1.5rem;
             font-weight: 900;
@@ -307,29 +332,6 @@
         .highlight {
             color: var(--accent-orange);
             text-shadow: var(--glow-orange);
-        }
-
-        .home-photo-end-wrap {
-            display: flex;
-            justify-content: flex-start;
-            padding-left: 30px;
-            margin-top: 1rem;
-        }
-
-        .home-photo-end {
-            width: 200px;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.25);
-            height: auto;
-            transform: rotate(-1.5deg);
-        }
-
-        .home-photo-caption {
-            margin-top: 0.6rem;
-            font-size: 0.78rem;
-            color: var(--text-gray);
-            letter-spacing: 1px;
-            font-style: italic;
         }
 
         .home-text a {
@@ -645,7 +647,13 @@
         <!-- HOME SECTION - shown on load, hidden when nav item active -->
         <div id="home-section">
             <div class="home-hero">
-                <img src="/assets/alex_ski.jpg" alt="Alex and daughter on a ski lift" class="home-photo home-photo-main">
+                <!-- Left col: photos stacked -->
+                <div class="home-photos-col">
+                    <img src="/assets/alex_ski.jpg" alt="Alex and daughter on a ski lift" class="home-photo-main">
+                    <img src="/assets/alex_beach.jpg" alt="Alex at Venice Beach" class="home-photo-end">
+                    <p class="home-photo-caption">Venice Beach. "NERD" hat mandatory.</p>
+                </div>
+                <!-- Right col: text + sign-off + teasers -->
                 <div class="home-text">
                     <h2>PhD physicist. Hardware director. Dad.</h2>
                     <p>
@@ -672,20 +680,16 @@
                         For <span class="highlight">SCIENCE</span>,
                     </p>
                     <p class="home-signoff">— Alex</p>
-                </div>
-            </div>
-            <div class="home-photo-end-wrap">
-                <img src="/assets/alex_beach.jpg" alt="Alex at Venice Beach" class="home-photo home-photo-end">
-                <p class="home-photo-caption">Venice Beach. "NERD" hat mandatory.</p>
-            </div>
 
-            <div class="home-teasers">
-                <div class="home-teaser" onclick="showSubcards('projects'); setTimeout(()=>{ document.querySelector('.category-projects .subcard:last-child, #subcard-container .subcard:last-child').scrollIntoView({behavior:'smooth',block:'center'})},300)">
-                    <div class="home-teaser-books">
-                        <img src="/assets/book_vol1.jpg" alt="Of Animals and Art Vol 1" class="teaser-book teaser-book-back">
-                        <img src="/assets/book_vol2.jpg" alt="Of Animals and Art Vol 2" class="teaser-book teaser-book-front">
+                    <div class="home-teasers">
+                        <div class="home-teaser" onclick="showSubcards('projects')">
+                            <div class="home-teaser-books">
+                                <img src="/assets/book_vol1.jpg" alt="Of Animals and Art Vol 1" class="teaser-book teaser-book-back">
+                                <img src="/assets/book_vol2.jpg" alt="Of Animals and Art Vol 2" class="teaser-book teaser-book-front">
+                            </div>
+                            <p class="home-teaser-label">Also wrote kids' books ↗</p>
+                        </div>
                     </div>
-                    <p class="home-teaser-label">Also wrote kids' books ↗</p>
                 </div>
             </div>
         </div>
