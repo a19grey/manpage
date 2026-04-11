@@ -201,12 +201,19 @@
             display: flex;
             justify-content: center;
             gap: 0.25rem;
-            padding: 0.5rem 2rem;
+            padding: 0.5rem 1rem;
             background: linear-gradient(135deg, #1a1a2e 0%, #2d2d4a 100%);
             border-bottom: 2px solid rgba(255, 107, 53, 0.3);
             position: sticky;
             top: 0;
             z-index: 100;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        #nav-bar::-webkit-scrollbar {
+            display: none;
         }
 
         .nav-item {
@@ -223,6 +230,8 @@
             background: transparent;
             transition: all 0.25s ease;
             user-select: none;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .nav-item:hover {
