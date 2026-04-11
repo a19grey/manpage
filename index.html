@@ -242,6 +242,106 @@
          * SUBCARD SECTION - Expanded view
          * ================================================================
          */
+        /*
+         * ================================================================
+         * HOME SECTION
+         * ================================================================
+         */
+        #home-section {
+            padding: 3rem 1rem 2rem;
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .home-hero {
+            display: flex;
+            gap: 2.5rem;
+            align-items: flex-start;
+            margin-bottom: 3rem;
+        }
+
+        .home-photo-main {
+            width: 280px;
+            min-width: 280px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+            object-fit: cover;
+        }
+
+        .home-text h2 {
+            font-size: 1.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--text-dark);
+            margin-bottom: 1.2rem;
+        }
+
+        .home-text p {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .home-text strong {
+            color: var(--text-dark);
+            font-weight: 700;
+        }
+
+        .home-text em {
+            color: var(--accent-orange);
+            font-style: normal;
+            font-weight: 600;
+        }
+
+        .home-cta {
+            margin-top: 1.5rem;
+            font-size: 1rem !important;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-dark) !important;
+        }
+
+        .highlight {
+            color: var(--accent-orange);
+            text-shadow: var(--glow-orange);
+        }
+
+        .home-photo-end-wrap {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .home-photo-end {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            object-fit: cover;
+            object-position: top;
+            max-height: 360px;
+        }
+
+        .home-photo-caption {
+            margin-top: 0.6rem;
+            font-size: 0.78rem;
+            color: var(--text-gray);
+            letter-spacing: 1px;
+            font-style: italic;
+        }
+
+        @media (max-width: 640px) {
+            .home-hero {
+                flex-direction: column;
+            }
+            .home-photo-main {
+                width: 100%;
+                min-width: unset;
+            }
+        }
+
         #subcard-section {
             display: none;
             margin-top: 2.5rem;
@@ -460,6 +560,43 @@
     </nav>
 
     <main>
+        <!-- HOME SECTION - shown on load, hidden when nav item active -->
+        <div id="home-section">
+            <div class="home-hero">
+                <img src="/assets/alex_ski.jpg" alt="Alex and daughter on a ski lift" class="home-photo home-photo-main">
+                <div class="home-text">
+                    <h2>PhD physicist. Hardware director. Dad.</h2>
+                    <p>
+                        I spent my 20s at Caltech making nanomechanical oscillators cold enough to touch the quantum ground state — 
+                        stuff published in <em>Nature</em> and <em>Physical Review Letters</em>. 
+                        Then Apple called, and I spent four years making Face ID work at iPhone scale: 
+                        VCSELs, structured light, dot projectors shipping in hundreds of millions of pockets.
+                    </p>
+                    <p>
+                        After that I went underground — literally — at The Boring Company, integrating a 300-ton tunneling machine 
+                        that had to beat a snail named Gary doing 13mm/s. (We're working on it.)
+                    </p>
+                    <p>
+                        Now I'm Director of Hardware at <strong>Trace</strong>, building AI-powered soccer cameras that 
+                        automatically film and edit your kid's game. 10,000+ units on pitches worldwide. 
+                        Hardware-as-a-service, real problems, real soccer moms with opinions.
+                    </p>
+                    <p>
+                        When I'm not shipping hardware I'm vibe-coding games, running AI experiments on HuggingFace, 
+                        and trying to raise two girls (7 and 4) with less helicopter and more "figure it out yourself." 
+                        That last part became <strong>@rocksolidparenting</strong>.
+                    </p>
+                    <p class="home-cta">
+                        Philosophy: <span class="highlight">Build Moar Stuff.</span>
+                    </p>
+                </div>
+            </div>
+            <div class="home-photo-end-wrap">
+                <img src="/assets/alex_beach.jpg" alt="Alex at Venice Beach" class="home-photo home-photo-end">
+                <p class="home-photo-caption">Venice Beach. "NERD" hat mandatory.</p>
+            </div>
+        </div>
+
         <div id="subcard-section">
             <div class="category-header">
                 <h2 id="category-title"></h2>
@@ -660,6 +797,13 @@
         // Track current open category
         let currentCategory = null;
 
+        function showHome() {
+            document.getElementById('home-section').style.display = 'block';
+            document.getElementById('subcard-section').classList.remove('show');
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            currentCategory = null;
+        }
+
         function showSubcards(category) {
             const data = cardData[category];
             if (!data) return;
@@ -667,6 +811,9 @@
             const container = document.getElementById('subcard-container');
             const section = document.getElementById('subcard-section');
             const categoryTitle = document.getElementById('category-title');
+
+            // Hide home
+            document.getElementById('home-section').style.display = 'none';
 
             // Update active nav item
             document.querySelectorAll('.nav-item').forEach(item => {
@@ -708,10 +855,7 @@
         }
 
         function closeSubcards() {
-            const section = document.getElementById('subcard-section');
-            section.classList.remove('show');
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            currentCategory = null;
+            showHome();
         }
 
         // Add click handlers to nav items
