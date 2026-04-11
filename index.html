@@ -344,6 +344,67 @@
             text-decoration: underline;
         }
 
+        /*
+         * ================================================================
+         * HOME TEASERS - Clickable preview items
+         * ================================================================
+         */
+        .home-teasers {
+            margin-top: 2.5rem;
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .home-teaser {
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+            transition: transform 0.2s ease;
+        }
+
+        .home-teaser:hover {
+            transform: translateY(-4px);
+        }
+
+        .home-teaser-books {
+            position: relative;
+            width: 130px;
+            height: 165px;
+        }
+
+        .teaser-book {
+            position: absolute;
+            width: 110px;
+            border-radius: 6px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+            height: auto;
+        }
+
+        .teaser-book-back {
+            top: 8px;
+            left: 0;
+            transform: rotate(-5deg);
+            z-index: 1;
+        }
+
+        .teaser-book-front {
+            top: 0;
+            left: 22px;
+            transform: rotate(3deg);
+            z-index: 2;
+        }
+
+        .home-teaser-label {
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-orange);
+        }
+
         .home-signoff {
             font-size: 1.1rem !important;
             font-style: italic;
@@ -617,6 +678,16 @@
                 <img src="/assets/alex_beach.jpg" alt="Alex at Venice Beach" class="home-photo home-photo-end">
                 <p class="home-photo-caption">Venice Beach. "NERD" hat mandatory.</p>
             </div>
+
+            <div class="home-teasers">
+                <div class="home-teaser" onclick="showSubcards('projects'); setTimeout(()=>{ document.querySelector('.category-projects .subcard:last-child, #subcard-container .subcard:last-child').scrollIntoView({behavior:'smooth',block:'center'})},300)">
+                    <div class="home-teaser-books">
+                        <img src="/assets/book_vol1.jpg" alt="Of Animals and Art Vol 1" class="teaser-book teaser-book-back">
+                        <img src="/assets/book_vol2.jpg" alt="Of Animals and Art Vol 2" class="teaser-book teaser-book-front">
+                    </div>
+                    <p class="home-teaser-label">Also wrote kids' books ↗</p>
+                </div>
+            </div>
         </div>
 
         <div id="subcard-section">
@@ -773,6 +844,16 @@
                         image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600',
                         link: 'https://huggingface.co/A19grey',
                         linkText: 'View on HuggingFace'
+                    },
+                    {
+                        title: 'Of Animals and Art',
+                        date: '2024',
+                        description: 'Two kids\' coloring books — written and published under the name Alexander Grey Krause. Geometric animal art for curious kids who like color. Vol 1 features a parrot, dolphin, and cat. Vol 2 goes bigger with a toucan, penguin, and badger.',
+                        image: '/assets/book_vol1.jpg',
+                        link: 'https://a.co/d/0ag758nY',
+                        linkText: 'Vol 1 on Amazon',
+                        link2: 'https://a.co/d/0ag758nY',
+                        linkText2: 'Vol 2 on Amazon'
                     }
                 ]
             },
@@ -860,11 +941,13 @@
                 if (subcard.date) {
                     html += `<div class="date">${subcard.date}</div>`;
                 }
-                html += `<p>${subcard.description}`;
+                html += `<p>${subcard.description}</p>`;
                 if (subcard.link && subcard.linkText) {
-                    html += `<br><a href="${subcard.link}" target="_blank">${subcard.linkText}</a>`;
+                    html += `<a href="${subcard.link}" target="_blank">${subcard.linkText}</a>`;
                 }
-                html += `</p>`;
+                if (subcard.link2 && subcard.linkText2) {
+                    html += ` <a href="${subcard.link2}" target="_blank">${subcard.linkText2}</a>`;
+                }
 
                 div.innerHTML = html;
                 container.appendChild(div);
