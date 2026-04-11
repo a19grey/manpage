@@ -237,6 +237,16 @@
             border-color: var(--accent-orange);
         }
 
+        .nav-home {
+            font-size: 1rem;
+            padding: 0.35rem 0.8rem;
+            opacity: 0.8;
+        }
+
+        .nav-home:hover {
+            opacity: 1;
+        }
+
         /*
          * ================================================================
          * SUBCARD SECTION - Expanded view
@@ -701,6 +711,7 @@
     </header>
 
     <nav id="nav-bar">
+        <div class="nav-item nav-home" onclick="showHome()" title="Home">⌂</div>
         <div class="nav-item" data-category="essays">Essays</div>
         <div class="nav-item" data-category="work">Work</div>
         <div class="nav-item" data-category="projects">Side Projects</div>
