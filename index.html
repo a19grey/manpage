@@ -603,6 +603,19 @@
             object-fit: unset;
         }
 
+        .subcard-images-col {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            width: 260px;
+            min-width: 260px;
+        }
+
+        .subcard-images-col .subcard-image {
+            width: 100%;
+            min-width: unset;
+        }
+
         .subcard-body {
             flex: 1;
         }
@@ -894,6 +907,7 @@
                         title: 'The Boring Company',
                         date: '2021 - 2023',
                         description: 'Led integration for a >300-ton tunneling machine being lowered into the ground by a 500-ton crane. Applied Apple-style project management to infrastructure. Learned that you can buy more equipment and hire more people, but you can\'t buy more time. (Yes, there was also a flamethrower. Standard issue.)',
+                        images: ['/assets/boring_crane.jpg', '/assets/boring_flamethrower.jpg'],
                         image: '/assets/boring_crane.jpg',
                         link: 'https://www.boringcompany.com',
                         linkText: 'Learn More'
@@ -1075,7 +1089,17 @@
                 const div = document.createElement('div');
                 div.className = 'subcard';
 
-                let html = `<img src="${subcard.image}" alt="${subcard.title}" class="subcard-image" onerror="this.style.display='none'">`;
+                let html = '';
+                const imgs = subcard.images || (subcard.image ? [subcard.image] : []);
+                if (imgs.length > 1) {
+                    html += `<div class="subcard-images-col">`;
+                    imgs.forEach(src => {
+                        html += `<img src="${src}" alt="${subcard.title}" class="subcard-image" onerror="this.style.display='none'">`;
+                    });
+                    html += `</div>`;
+                } else if (imgs.length === 1) {
+                    html += `<img src="${imgs[0]}" alt="${subcard.title}" class="subcard-image" onerror="this.style.display='none'">`;
+                }
                 html += `<div class="subcard-body">`;
                 html += `<h3>${subcard.title}</h3>`;
                 if (subcard.date) {
