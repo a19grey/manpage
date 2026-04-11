@@ -302,6 +302,23 @@
             margin-top: 0.1rem;
         }
 
+        .home-teaser-inline {
+            margin-top: 0.5rem;
+        }
+
+        .teaser-inline-img {
+            width: 200px;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+            height: auto;
+            transform: rotate(1deg);
+            transition: transform 0.2s ease;
+        }
+
+        .home-teaser-inline:hover .teaser-inline-img {
+            transform: rotate(0deg) scale(1.02);
+        }
+
         /* Right column: text */
         .home-text h2 {
             font-size: 1.5rem;
@@ -494,9 +511,40 @@
             .home-hero {
                 flex-direction: column;
             }
-            .home-photo-main {
+
+            /* On mobile: text first, then photos col, then teasers col */
+            .home-photos-col {
+                order: 3;
                 width: 100%;
-                min-width: unset;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 0.8rem;
+            }
+
+            /* Exception: beach/nerd photo stays at top — pulled out to order 1 */
+            .home-photo-end {
+                order: -1;
+                width: 160px;
+                margin-left: 0;
+            }
+
+            .home-photo-main {
+                width: 160px;
+            }
+
+            .teaser-inline-img {
+                width: 160px;
+            }
+
+            .home-text {
+                order: 2;
+            }
+
+            .home-teasers {
+                order: 4;
+                width: 100%;
+                flex-direction: row;
+                flex-wrap: wrap;
             }
         }
 
@@ -711,6 +759,10 @@
                     <img src="/assets/alex_ski.jpg" alt="Alex and daughter on a ski lift" class="home-photo-main">
                     <img src="/assets/alex_beach.jpg" alt="Alex at Venice Beach" class="home-photo-end">
                     <p class="home-photo-caption">Venice Beach. "NERD" hat mandatory.</p>
+                    <div class="home-teaser home-teaser-inline" onclick="showSubcards('work')">
+                        <img src="/assets/boring_flamethrower.jpg" alt="Flamethrower at Boring Company TBM" class="teaser-inline-img">
+                        <p class="home-teaser-label">300-ton TBM ↗</p>
+                    </div>
                 </div>
                 <!-- Middle col: text + sign-off -->
                 <div class="home-text">
@@ -841,8 +893,8 @@
                     {
                         title: 'The Boring Company',
                         date: '2021 - 2023',
-                        description: 'Led integration for a >300-ton tunneling machine. Applied Apple-style project management to infrastructure. Learned that you can buy more equipment and hire more people, but you can\'t buy more time.',
-                        image: '/opt/apps/manpage/assets/boring_company_tbm_cutterhead.jpg',
+                        description: 'Led integration for a >300-ton tunneling machine. Applied Apple-style project management to infrastructure. Learned that you can buy more equipment and hire more people, but you can\'t buy more time. (Yes, that\'s a flamethrower. Standard issue.)',
+                        image: '/assets/boring_flamethrower.jpg',
                         link: 'https://www.boringcompany.com',
                         linkText: 'Learn More'
                     },
