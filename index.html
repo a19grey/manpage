@@ -352,10 +352,12 @@
          * ================================================================
          */
         .home-teasers {
-            margin-top: 2.5rem;
             display: flex;
-            gap: 2rem;
-            flex-wrap: wrap;
+            flex-direction: column;
+            gap: 1.5rem;
+            flex-shrink: 0;
+            width: 160px;
+            padding-top: 0.5rem;
         }
 
         .home-teaser {
@@ -653,7 +655,7 @@
                     <img src="/assets/alex_beach.jpg" alt="Alex at Venice Beach" class="home-photo-end">
                     <p class="home-photo-caption">Venice Beach. "NERD" hat mandatory.</p>
                 </div>
-                <!-- Right col: text + sign-off + teasers -->
+                <!-- Middle col: text + sign-off -->
                 <div class="home-text">
                     <h2>PhD physicist. Hardware director. Dad.</h2>
                     <p>
@@ -680,15 +682,16 @@
                         For <span class="highlight">SCIENCE</span>,
                     </p>
                     <p class="home-signoff">— Alex</p>
+                </div>
 
-                    <div class="home-teasers">
-                        <div class="home-teaser" onclick="showSubcards('projects')">
-                            <div class="home-teaser-books">
-                                <img src="/assets/book_vol1.jpg" alt="Of Animals and Art Vol 1" class="teaser-book teaser-book-back">
-                                <img src="/assets/book_vol2.jpg" alt="Of Animals and Art Vol 2" class="teaser-book teaser-book-front">
-                            </div>
-                            <p class="home-teaser-label">Also wrote kids' books ↗</p>
+                <!-- Right col: teasers -->
+                <div class="home-teasers">
+                    <div class="home-teaser" onclick="showSubcards('projects')">
+                        <div class="home-teaser-books">
+                            <img src="/assets/book_vol1.jpg" alt="Of Animals and Art Vol 1" class="teaser-book teaser-book-back">
+                            <img src="/assets/book_vol2.jpg" alt="Of Animals and Art Vol 2" class="teaser-book teaser-book-front">
                         </div>
+                        <p class="home-teaser-label">Also wrote kids' books ↗</p>
                     </div>
                 </div>
             </div>
