@@ -354,9 +354,9 @@
         .home-teasers {
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
+            gap: 2rem;
             flex-shrink: 0;
-            width: 160px;
+            width: 165px;
             padding-top: 0.5rem;
         }
 
@@ -407,6 +407,49 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             color: var(--accent-orange);
+        }
+
+        .home-teaser-sublabel {
+            font-size: 0.7rem;
+            color: var(--text-gray);
+            font-style: italic;
+            margin-top: -0.2rem;
+            line-height: 1.3;
+        }
+
+        .home-teaser-paper {
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .teaser-paper-imgs {
+            position: relative;
+            width: 150px;
+            height: 110px;
+        }
+
+        .teaser-paper-img {
+            position: absolute;
+            width: 130px;
+            border-radius: 6px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+            height: auto;
+        }
+
+        .teaser-paper-back {
+            top: 10px;
+            left: 0;
+            transform: rotate(-3deg);
+            z-index: 1;
+        }
+
+        .teaser-paper-front {
+            top: 0;
+            left: 15px;
+            transform: rotate(2deg);
+            z-index: 2;
         }
 
         .home-signoff {
@@ -693,6 +736,15 @@
                         </div>
                         <p class="home-teaser-label">Also wrote kids' books ↗</p>
                     </div>
+
+                    <a href="https://link.aps.org/accepted/10.1103/PhysRevLett.115.233601" target="_blank" class="home-teaser home-teaser-paper">
+                        <div class="teaser-paper-imgs">
+                            <img src="/assets/paper_setup.jpg" alt="Optomechanical crystal setup" class="teaser-paper-img teaser-paper-back">
+                            <img src="/assets/paper_theory.jpg" alt="Theory vs experiment" class="teaser-paper-img teaser-paper-front">
+                        </div>
+                        <p class="home-teaser-label">My favorite paper ↗</p>
+                        <p class="home-teaser-sublabel">Theory so good it's suspicious</p>
+                    </a>
                 </div>
             </div>
         </div>
