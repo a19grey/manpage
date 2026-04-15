@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Selected Side Projects — Alex Krause</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --orange:   #E8601C;
+    --charcoal: #2C2C2C;
+    --mid-grey: #555555;
+    --light-grey: #888888;
+    --rule:     #D8D0C8;
+    --bg:       #FAFAF8;
+    --link:     #2563EB;
+  }
+
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: var(--bg);
+    color: var(--charcoal);
+    font-size: 11pt;
+    line-height: 1.7;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* ── Page wrapper ── */
+  .page {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 52px 56px 64px;
+  }
+
+  /* ── Header ── */
+  .doc-header {
+    border-bottom: 2.5px solid var(--orange);
+    padding-bottom: 18px;
+    margin-bottom: 10px;
+  }
+
+  .doc-header h1 {
+    font-family: 'Arial', 'Helvetica', sans-serif;
+    font-size: 22pt;
+    font-weight: 700;
+    color: var(--orange);
+    letter-spacing: 0.5px;
+    line-height: 1.15;
+  }
+
+  .doc-header .subtitle {
+    font-family: 'Arial', 'Helvetica', sans-serif;
+    font-size: 10.5pt;
+    color: var(--mid-grey);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+
+  .doc-header .meta {
+    font-family: 'Arial', 'Helvetica', sans-serif;
+    font-size: 9.5pt;
+    color: var(--mid-grey);
+    margin-top: 12px;
+  }
+
+  .doc-header .meta a {
+    color: var(--link);
+    text-decoration: none;
+  }
+
+  /* ── Section divider ── */
+  .section-label {
+    font-family: 'Arial', 'Helvetica', sans-serif;
+    font-size: 7.5pt;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin: 36px 0 20px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--rule);
+  }
+
+  /* ── Project entry ── */
+  .project {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 22px;
+    margin-bottom: 32px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--rule);
+    page-break-inside: avoid;
+  }
+
+  .project:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  /* ── Image panel ── */
+  .project-image {
+    flex-shrink: 0;
+  }
+
+  .project-image img {
+    width: 200px;
+    height: 130px;
+    object-fit: cover;
+    border-radius: 4px;
+    display: block;
+    border: 1px solid var(--rule);
+  }
+
+  .project-image .img-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+  }
+
+  .project-image .img-pair img {
+    width: 100%;
+    height: 96px;
+  }
+
+  /* ── Text panel ── */
+  .project-text {}
+
+  .project-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+
+  .project-title {
+    font-family: 'Arial', 'Helvetica', sans-serif;
+    font-size: 12pt;
+    font-weight: 700;
+    color: var(--orange);
+    line-height: 1.2;
+  }
+
+  .project-date {
+    font-family: 'Arial', 'Helvetica', sans-serif;
+    font-size: 8.5pt;
+    color: var(--light-grey);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .project-description {
+    font-size: 10.5pt;
+    color: var(--charcoal);
+    line-height: 1.72;
+    margin-bottom: 10px;
+  }
+
+  .project-links {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .project-links a {
+    font-family: 'Arial', 'Helvetica', sans-serif;
+    font-size: 8.5pt;
+    color: var(--link);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(37, 99, 235, 0.3);
+    padding-bottom: 1px;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    margin-top: 44px;
+    padding-top: 14px;
+    border-top: 2px solid var(--rule);
+    font-family: 'Arial', 'Helvetica', sans-serif;
+    font-size: 9pt;
+    color: var(--mid-grey);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .doc-footer a {
+    color: var(--link);
+    text-decoration: none;
+  }
+
+  /* ── Print ── */
+  @media print {
+    body { background: white; }
+    .page { padding: 36px 44px 48px; }
+    .project-links a { color: var(--link) !important; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="doc-header">
+    <h1>Selected Side Projects</h1>
+    <div class="subtitle">Alex Krause &nbsp;·&nbsp; Hardware Director &nbsp;·&nbsp; PhD Physics</div>
+    <div class="meta">
+      greylabs86.com &nbsp;·&nbsp;
+      <a href="https://github.com/a19grey">github.com/a19grey</a> &nbsp;·&nbsp;
+      <a href="https://huggingface.co/A19grey">huggingface.co/A19grey</a> &nbsp;·&nbsp;
+      <a href="https://x.com/a19grey">@a19grey</a>
+    </div>
+  </div>
+
+  <div class="section-label">Software &amp; AI Projects</div>
+
+  <!-- ChatterBot -->
+  <div class="project">
+    <div class="project-image">
+      <img src="/assets/chatterbot_ui.png" alt="ChatterBot UI">
+    </div>
+    <div class="project-text">
+      <div class="project-header">
+        <div class="project-title">ChatterBot — Multi-Agent Document Intelligence</div>
+        <div class="project-date">2025</div>
+      </div>
+      <p class="project-description">
+        Originated as an exploration of NVIDIA's CUDA-Q quantum computing library; evolved into a production document intelligence platform. Accepts arbitrary combinations of web URLs (with automatic sub-page crawling) and uploaded documents, indexing all content into a local vector database. The core architectural departure from standard retrieval-augmented generation: multiple independent agents query the vector store in parallel via a hierarchical data structure, surfacing distinct evidence fragments before a synthesis model constructs the final response.
+      </p>
+      <div class="project-links">
+        <a href="https://chatter-bot.com/">chatter-bot.com</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Zombie Friends -->
+  <div class="project">
+    <div class="project-image">
+      <div class="img-pair">
+        <img src="/assets/zombie_friends_logo.png" alt="Zombie Friends Logo">
+        <img src="/assets/zombie_friends_gameplay.png" alt="Zombie Friends Gameplay">
+      </div>
+    </div>
+    <div class="project-text">
+      <div class="project-header">
+        <div class="project-title">Zombie Friends — Browser Game</div>
+        <div class="project-date">2025</div>
+      </div>
+      <p class="project-description">
+        Submitted to the inaugural vibe-coding game jam at vibej.am, sponsored by @levelsio and judged by Andrej Karpathy. An endless runner built entirely with AI-generated 3D models, audio, and code — an exercise in understanding the optimization constraints of real-time JavaScript game loops, game-balance mechanics, and the practical limits of fully AI-generated interactive software in 2025.
+      </p>
+      <div class="project-links">
+        <a href="https://zombie-team.vercel.app">Play Game</a>
+        <a href="https://vibej.am/2025/">vibej.am Game Jam</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- DepthPro -->
+  <div class="project">
+    <div class="project-image">
+      <img src="/assets/depth_pro_demo.jpg" alt="DepthPro Demo">
+    </div>
+    <div class="project-text">
+      <div class="project-header">
+        <div class="project-title">DepthPro — Metric 3D Reconstruction from Single Images</div>
+        <div class="project-date">2024</div>
+      </div>
+      <p class="project-description">
+        Extended Apple Research's monocular depth model (DepthPro) beyond the relative-depth visualizations available in existing public demos. Forked and modified the HuggingFace Space to expose the model's native metric output — real physical depth in meters — and added an export pipeline generating downloadable textured OBJ files from any single photograph. Drawing on direct experience shipping Face ID depth-sensing hardware at iPhone scale, the goal was to surface the full capability of the underlying model rather than its cosmetic output.
+      </p>
+      <div class="project-links">
+        <a href="https://huggingface.co/spaces/A19grey/depth-pro">Live Demo on HuggingFace</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI Video Hero Mode -->
+  <div class="project">
+    <div class="project-image">
+      <div class="img-pair">
+        <img src="/assets/ai_video_heromode.jpg" alt="AI Video Hero Mode">
+        <img src="/assets/ai_video_heromode2.jpg" alt="AI Video Hero Mode Part 2">
+      </div>
+    </div>
+    <div class="project-text">
+      <div class="project-header">
+        <div class="project-title">AI Video Hero Mode — Cinematic AI Generation</div>
+        <div class="project-date">2024</div>
+      </div>
+      <p class="project-description">
+        Explored the frontier of AI video generation by scripting fully realized cinematic sequences — complete with dialogue, camera direction, and visual effects — rendered via Seedance 2.0. Produced three end-to-end videos, then developed an automated harness for script generation at scale. Key finding: fully autonomous video generation from arbitrary prompts remains one model release away; deliberate human direction at the scripting and prompt level is still the differentiating factor between commodity output and compelling content.
+      </p>
+      <div class="project-links">
+        <a href="https://www.linkedin.com/posts/forscience_ai-is-getting-so-fun-were-entering-the-activity-7442076764492902401-m48Y">Part 1 on LinkedIn</a>
+        <a href="https://www.linkedin.com/posts/forscience_promise-i-wont-just-spam-video-of-me-play-acting-ugcPost-7442787717480022016-k5lH">Part 2 on LinkedIn</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Hardware &amp; Physical Projects</div>
+
+  <!-- LED Suit -->
+  <div class="project">
+    <div class="project-image">
+      <img src="/assets/led_suit_composite.jpg" alt="LED Motion Reactive Suit">
+    </div>
+    <div class="project-text">
+      <div class="project-header">
+        <div class="project-title">LED Motion-Reactive Wearable Suit</div>
+        <div class="project-date">2017</div>
+      </div>
+      <p class="project-description">
+        A wearable light system in which LED output is entirely driven by the wearer's motion: acceleration magnitude controls brightness while X/Y/Z axes map across the full RGB color spectrum, producing a unique color signature for every direction of movement. IMU sensors at the hands and feet feed dual Arduino microcontrollers mounted on a custom back harness. Premiered in a live demonstration with professional dancer Allie Truax. The design challenge was building a harness sufficiently lightweight and quick-donning that performers with no technical background could wear it without restriction.
+      </p>
+      <div class="project-links">
+        <a href="https://youtu.be/jl5HzWneFZ0">Watch Demo</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- FPV Drone -->
+  <div class="project">
+    <div class="project-image">
+      <img src="/assets/fpv_drone_caddx.jpg" alt="FPV Drone">
+    </div>
+    <div class="project-text">
+      <div class="project-header">
+        <div class="project-title">FPV Drone — Caddx GoFilm 20 Cinema Build</div>
+        <div class="project-date">2025</div>
+      </div>
+      <p class="project-description">
+        Built and piloted a Caddx GoFilm 20 — a 4K cinema-grade FPV quadcopter optimized for smooth, stabilized aerial cinematography rather than freestyle aerobatics. The project validated a personal hypothesis: under $1,000 in hardware and under 100 hours of flight practice are sufficient to access a mode of aerial filmmaking previously reserved for professional operators. All footage is original, shot over the builder's property.
+      </p>
+    </div>
+  </div>
+
+  <div class="section-label">Publishing</div>
+
+  <!-- Of Animals and Art -->
+  <div class="project">
+    <div class="project-image">
+      <img src="/assets/book_example.jpg" alt="Of Animals and Art book">
+    </div>
+    <div class="project-text">
+      <div class="project-header">
+        <div class="project-title">Of Animals and Art — Children's Book Series</div>
+        <div class="project-date">2024</div>
+      </div>
+      <p class="project-description">
+        A published two-volume children's book series presenting the same animal subjects rendered across distinct historical art movements — photorealism, Art Deco, Impressionism, and others — side by side. The pedagogical premise: children absorb visual vocabulary (artistic style, period, technique) through direct exposure before formal explanation, in the same way they acquire language. AI image generation made it practical to commission the same subject across dozens of styles at the quality level required for print publication.
+      </p>
+      <div class="project-links">
+        <a href="https://a.co/d/0ag758nY">Vol. 1 on Amazon</a>
+        <a href="https://a.co/d/0ag758nY">Vol. 2 on Amazon</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="doc-footer">
+    <span>Alex Krause &nbsp;·&nbsp; <a href="https://greylabs86.com">greylabs86.com</a></span>
+    <span>A19grey@gmail.com &nbsp;·&nbsp; 405.464.2483</span>
+  </div>
+
+</div>
+</body>
+</html>
